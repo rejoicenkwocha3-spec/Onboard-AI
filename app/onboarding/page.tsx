@@ -11,8 +11,10 @@ export default async function OnboardingPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login?next=/onboarding");
 
+  // Fallback: creates the account if the signup trigger could not (or for pre-existing users).
+  await supabase.rpc("oa_ensure_my_account");
   const { data: org } = await supabase
-    .from("organizations").select("name").limit(1).maybeSingle();
+    .from("oa_organizations").select("name").limit(1).maybeSingle();
 
   return (
     <AuthShell title="Your account is ready" subtitle="The guided organization setup is the next milestone.">

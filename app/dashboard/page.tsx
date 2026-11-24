@@ -9,7 +9,8 @@ export default async function DashboardPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login?next=/dashboard");
 
-  const { data: profile } = await supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle();
+  await supabase.rpc("oa_ensure_my_account");
+  const { data: profile } = await supabase.from("oa_profiles").select("full_name").eq("id", user.id).maybeSingle();
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-12">
