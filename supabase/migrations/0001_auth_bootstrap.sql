@@ -2,6 +2,22 @@
 -- A trigger on auth.users creates the profile, organization, default workspace and
 -- owner memberships, so it works with or without email confirmation.
 
+-- SAFETY GUARD for reused projects: stop before changing anything if these names are taken.
+do $$
+declare clash text;
+begin
+  select string_agg(c.relname, ', ') into clash
+  from pg_class c join pg_namespace n on n.oid = c.relnamespace
+  where n.nspname = 'public' and c.relkind in ('r','v','m')
+    and c.relname in ('profiles','organizations','organization_members','workspaces','workspace_members');
+  if clash is not null then
+    raise exception 'Onboard AI migration stopped: public tables already exist (%). Run supabase/diagnostics/check_existing_project.sql and share the output before continuing.', clash;
+  end if;
+  if exists (select 1 from pg_trigger where tgname = 'on_auth_user_created' and tgrelid = 'auth.users'::regclass) then
+    raise exception 'Onboard AI migration stopped: trigger on_auth_user_created already exists on auth.users. Run supabase/diagnostics/check_existing_project.sql first.';
+  end if;
+end $$;
+
 create extension if not exists pgcrypto;
 
 create or replace function public.set_updated_at() returns trigger
