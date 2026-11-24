@@ -30,6 +30,11 @@ async function siteUrl() {
   return `${proto}://${host}`;
 }
 
+// Server-side only: the user sees a friendly message, the logs keep the real cause.
+function logAuthError(action: string, error: { message: string; status?: number; code?: string }) {
+  console.error(`[auth:${action}] status=${error.status ?? "n/a"} code=${error.code ?? "n/a"} message=${error.message}`);
+}
+
 const str = (fd: FormData, k: string) => (typeof fd.get(k) === "string" ? (fd.get(k) as string) : "");
 
 export async function signIn(_prev: AuthState, formData: FormData): Promise<AuthState> {
@@ -42,6 +47,7 @@ export async function signIn(_prev: AuthState, formData: FormData): Promise<Auth
 
   const { error } = await supabase.auth.signInWithPassword(parsed.data);
   if (error) {
+    logAuthError("signIn", error);
     const msg = error.message.toLowerCase();
     let text = "We could not sign you in. Please try again.";
     if (msg.includes("invalid login credentials")) text = "Incorrect email or password.";
@@ -80,10 +86,13 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
   });
 
   if (error) {
+    logAuthError("signUp", error);
     const msg = error.message.toLowerCase();
     let text = "We could not create your account. Please try again.";
     if (msg.includes("already registered") || msg.includes("already been registered"))
       text = "An account with this email already exists. Try signing in instead.";
+    else if (error.code === "email_address_invalid" || msg.includes("is invalid"))
+      text = "That email address cannot be used. Enter a valid work email address.";
     else if (error.status === 429 || msg.includes("rate limit"))
       text = "Too many attempts. Please wait a moment and try again.";
     else if (msg.includes("password")) text = error.message;
@@ -120,6 +129,7 @@ export async function requestPasswordReset(_prev: AuthState, formData: FormData)
   const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
     redirectTo: `${await siteUrl()}/auth/callback?next=/reset-password`,
   });
+  if (error) logAuthError("requestPasswordReset", error);
   if (error && (error.status === 429 || error.message.toLowerCase().includes("rate limit")))
     return { error: "Too many attempts. Please wait a moment and try again.", values: raw };
 
@@ -142,6 +152,7 @@ export async function updatePassword(_prev: AuthState, formData: FormData): Prom
 
   const { error } = await supabase.auth.updateUser({ password: parsed.data.password });
   if (error) {
+    logAuthError("updatePassword", error);
     return {
       error: error.message.toLowerCase().includes("different")
         ? "Choose a password you have not used before."
