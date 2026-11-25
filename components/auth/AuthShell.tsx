@@ -1,10 +1,11 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
 export function Logo() {
   return (
-    <Link href="/" className="inline-flex items-center gap-2 font-heading text-lg font-extrabold text-navy">
-      <span aria-hidden className="grid h-8 w-8 place-items-center rounded-lg bg-brand text-white">O</span>
+    <Link href="/" className="inline-flex items-center gap-2.5 font-heading text-lg font-extrabold text-navy">
+      <Image src="/logo.png" alt="" width={40} height={40} priority className="h-10 w-10 rounded-xl" />
       Onboard AI
     </Link>
   );
