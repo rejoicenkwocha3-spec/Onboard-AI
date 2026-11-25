@@ -204,3 +204,11 @@ create policy ws_members_manage on public.oa_workspace_members for all to authen
                  and public.oa_has_org_role(w.organization_id, array['owner','admin'])))
   with check (exists (select 1 from oa_workspaces w where w.id = workspace_id
                  and public.oa_has_org_role(w.organization_id, array['owner','admin'])));
+
+-- Table privileges for signed in users. Newer Supabase projects do not grant these automatically;
+-- RLS above still restricts every row to the user's own organization.
+grant usage on schema public to authenticated;
+grant select, insert, update, delete on
+  public.oa_profiles, public.oa_organizations, public.oa_organization_members,
+  public.oa_workspaces, public.oa_workspace_members
+to authenticated;
