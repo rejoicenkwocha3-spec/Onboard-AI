@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { Logo } from "@/components/auth/AuthShell";
 import { loadAccount } from "@/lib/account";
 import { createClient } from "@/lib/supabase/server";
 
@@ -13,7 +14,8 @@ export default async function DashboardPage() {
   const account = await loadAccount(supabase, user);
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-12">
+    <main className="mx-auto max-w-3xl px-4 py-8">
+      <div className="mb-8"><Logo /></div>
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-2xl font-extrabold text-navy">
           Welcome{account.fullName ? `, ${account.fullName}` : ""}
