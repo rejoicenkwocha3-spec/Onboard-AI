@@ -8,7 +8,7 @@ export default function ForgotPage() {
   return (
     <AuthShell
       title="Reset your password" subtitle="Enter your email and we will send you a reset link."
-      footer={<Link href="/login" className="font-medium text-brand hover:underline">Back to log in</Link>}
+      footer={<Link href="/login" className="font-medium text-brand hover:underline">Back to sign in</Link>}
     >
       <ForgotForm />
     </AuthShell>

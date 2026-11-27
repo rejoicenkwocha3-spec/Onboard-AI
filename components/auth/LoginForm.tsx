@@ -18,7 +18,7 @@ export function LoginForm({ next, initialError }: { next?: string; initialError?
       <div className="text-right">
         <Link href="/forgot-password" className="text-sm font-medium text-brand hover:underline">Forgot password?</Link>
       </div>
-      <SubmitButton>Log in</SubmitButton>
+      <SubmitButton>Sign in</SubmitButton>
     </form>
   );
 }

@@ -8,7 +8,7 @@ export default function SignupPage() {
   return (
     <AuthShell
       title="Create your account" subtitle="Set up your recruitment workspace in minutes."
-      footer={<>Already have an account? <Link href="/login" className="font-medium text-brand hover:underline">Log in</Link></>}
+      footer={<>Already have an account? <Link href="/login" className="font-medium text-brand hover:underline">Sign in</Link></>}
     >
       <SignupForm />
     </AuthShell>
