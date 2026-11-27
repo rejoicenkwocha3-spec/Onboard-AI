@@ -27,7 +27,6 @@ export default function Home() {
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link href="/signup" className="rounded-xl bg-brand px-6 py-3 font-semibold text-white hover:bg-brand-light">Get Started</Link>
-            <Link href="/platform" className="rounded-xl border border-line bg-white px-6 py-3 font-semibold text-navy hover:bg-surface">Explore Platform</Link>
           </div>
           <div className="mt-14 grid items-end gap-6 md:grid-cols-3">
             <div className="hidden md:block"><PhoneFrame title="Apply"><Chat items={[["bot", "Thanks for your interest in the Store Associate role. What is your full name?"], ["me", "Amara Okafor"], ["bot", "Can you work weekends?"], ["me", "Yes"]]} /></PhoneFrame></div>
@@ -125,7 +124,6 @@ export default function Home() {
         <h2 className="mx-auto max-w-3xl font-heading text-3xl font-extrabold text-white sm:text-5xl">Ready to give every candidate a better experience?</h2>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link href="/signup" className="rounded-xl bg-teal-accent px-6 py-3 font-semibold text-navy-deep hover:opacity-90">Get Started</Link>
-          <Link href="/platform" className="rounded-xl border border-white/30 px-6 py-3 font-semibold text-white hover:bg-white/10">Explore Platform</Link>
         </div>
       </Section>
     </>
