@@ -24,4 +24,10 @@ configuration and test chat (needs an AI key on the server).
 ## Not built yet (shown honestly in the app)
 
 Calendar sync, email/SMS/WhatsApp channels, ATS integrations, automatic workflow execution, event registration,
-Selar webhook subscription activation, CV upload on the public application, marketing pages.
+Selar webhook subscription activation, CV upload on the public application.
+
+## Marketing site
+
+Home, Platform, Solutions, Features and Pricing live in `app/(marketing)`. Copy and feature status are in `lib/marketing.ts`.
+Pricing comes from `lib/pricing.ts`: the three Selar pages show only price, monthly billing and cancel anytime, so plan names,
+descriptions and benefits are left blank there for the owner to fill in.
